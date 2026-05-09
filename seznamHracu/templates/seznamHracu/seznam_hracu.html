@@ -1,0 +1,44 @@
+{% extends 'seznamHracu/base.html' %}
+
+{% block title %}Hráči{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="mb-1"><i class="bi bi-people me-2 text-primary"></i>Hráči</h2>
+        <p class="text-secondary mb-0">Celkem {{ hraci|length }} hráčů</p>
+    </div>
+</div>
+
+<div class="row g-3">
+    {% for hrac in hraci %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h5 class="card-title mb-0">{{ hrac.jmeno }} {{ hrac.prijmeni }}</h5>
+                    <span class="badge bg-primary badge-pozice">{{ hrac.get_pozice_display }}</span>
+                </div>
+                <p class="card-text mb-1">
+                    <i class="bi bi-shield me-1"></i>
+                    {% if hrac.tym %}{{ hrac.tym }}{% else %}<span class="text-secondary">Bez týmu</span>{% endif %}
+                </p>
+                <p class="card-text mb-1">
+                    <i class="bi bi-flag me-1"></i>{{ hrac.narodnost }}
+                </p>
+                <p class="card-text mb-3">
+                    <i class="bi bi-hash me-1"></i>Dres č. {{ hrac.cislo_dresu }}
+                </p>
+                <a href="{% url 'detail_hrace' hrac.pk %}" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-arrow-right me-1"></i>Detail
+                </a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <p class="text-secondary">Žádní hráči nenalezeni.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
