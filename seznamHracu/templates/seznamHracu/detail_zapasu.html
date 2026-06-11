@@ -1,0 +1,62 @@
+{% extends 'seznamHracu/base.html' %}
+
+{% block title %}{{ zapas }}{% endblock %}
+
+{% block content %}
+<a href="{% url 'seznam_zapasu' %}" class="btn btn-outline-secondary btn-sm mb-4">
+    <i class="bi bi-arrow-left me-1"></i>Zpět na zápasy
+</a>
+
+<div class="detail-header mb-4">
+    <div class="row align-items-center text-center">
+        <div class="col-5">
+            <h3 class="mb-0"><a href="{% url 'detail_tymu' zapas.domaci.pk %}">{{ zapas.domaci }}</a></h3>
+            <small class="text-secondary">Domácí</small>
+        </div>
+        <div class="col-2">
+            <div style="font-size:2rem; font-weight:700; color:#58a6ff;">
+                {{ zapas.goly_domaci }} : {{ zapas.goly_hoste }}
+            </div>
+            <small class="text-secondary">{{ zapas.datum }}</small>
+        </div>
+        <div class="col-5">
+            <h3 class="mb-0"><a href="{% url 'detail_tymu' zapas.hoste.pk %}">{{ zapas.hoste }}</a></h3>
+            <small class="text-secondary">Hosté</small>
+        </div>
+    </div>
+</div>
+
+<h5 class="mb-3"><i class="bi bi-bar-chart me-2"></i>Statistiky hráčů</h5>
+{% if statistiky %}
+<div class="card">
+    <div class="card-body p-0">
+        <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th>Hráč</th>
+                    <th>Tým</th>
+                    <th class="text-center">Góly</th>
+                    <th class="text-center">Asistence</th>
+                    <th class="text-center">Minuty</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stat in statistiky %}
+                <tr>
+                    <td><a href="{% url 'detail_hrace' stat.hrac.pk %}">{{ stat.hrac }}</a></td>
+                    <td>
+                        {% if stat.hrac.tym %}{{ stat.hrac.tym }}{% else %}<span class="text-secondary">—</span>{% endif %}
+                    </td>
+                    <td class="text-center">{{ stat.goly }}</td>
+                    <td class="text-center">{{ stat.asistence }}</td>
+                    <td class="text-center">{{ stat.minuty }}'</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<p class="text-secondary">Žádné statistiky pro tento zápas.</p>
+{% endif %}
+{% endblock %}
